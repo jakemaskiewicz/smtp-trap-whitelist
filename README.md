@@ -12,6 +12,10 @@ As a solution, I've written an SMTP trap with a whitelist. If any email that rea
 
 To run from the command line, you will need ruby and the eventmachine gem. To install the gem, simply use `gem install eventmachine` from the console. Once you've installed the requisite gem, simply extract all of the files into a folder and run `ruby smtpserver.rb`
 
+### Config
+
+Be sure to edit config.yml to include your production SMTP server settings and port. Leave :local: :host: as "" in order to use the current machine's ip address.
+
 ### The Whitelist
 
 To add an email to the whitelist, stop the server and open whitelist.txt. Add one email for each line, and then restart the server.
@@ -22,7 +26,7 @@ For testing purposes, there is also a mail sending script that you can use with 
 
 ### Your Test Setup
 
-In order to use this mailserver with your application, simply point your SMTP sending code to use your machine's ip address in as the host, and port 2525. (http://whatsmyip.net/ is a quick way to get your ip). 
+In order to use this mailserver with your application, simply point your SMTP sending code to use your machine's ip address in as the host, and port 2525. (http://whatsmyip.net/ is a quick way to get your ip).  Running the server will also tell you (in stdout) what ip the server is running at.
 
 ### EmailStore
 
