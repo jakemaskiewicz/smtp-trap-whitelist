@@ -1,0 +1,7 @@
+:local:
+    :host: "" # leave empty to use current machine's ip
+    :port: 2525
+
+:remote:
+    :host: "your.smtp.server"
+    :port: 25

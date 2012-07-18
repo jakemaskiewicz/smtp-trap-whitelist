@@ -1,6 +1,8 @@
 require 'net/smtp'
 require 'socket'
 
+require 'config.rb'
+
 def get_ip
 
 	orig, Socket.do_not_reverse_lookup = Socket.do_not_reverse_lookup, true
@@ -22,6 +24,15 @@ Subject: SMTP e-mail test
 #{ARGV[2]}
 MESSAGE_END
 
-Net::SMTP.start(get_ip, 2525) do |smtp|
+if Config::SETTINGS[:local][:host].empty?
+	host = get_ip
+else
+	host = Config::SETTINGS[:local][:host]
+end
+
+port = Config::SETTINGS[:local][:port]
+
+
+Net::SMTP.start(host,port) do |smtp|
 	smtp.send_message message, ARGV[0], ARGV[1]
 end

@@ -3,6 +3,7 @@ require 'eventmachine'
 require 'socket'
 
 require 'emailstore.rb'
+require 'config.rb'
 
 class EmailServer < EM::P::SmtpServer
 	
@@ -37,7 +38,7 @@ class EmailServer < EM::P::SmtpServer
 		current.completed_at = Time.now
 		
 		EmailStore.instance.add_email(current)
-		puts "Email Recieved (e:#{EmailStore.instance.email_size},p:#{EmailStore.instance.pass_size})"
+		puts "Email Recieved (#{EmailStore.instance.email_size})"
 		
 		@current = OpenStruct.new
 		true
@@ -70,8 +71,11 @@ class EmailServer < EM::P::SmtpServer
 		@current ||= OpenStruct.new
 	end
 
-	def self.start(host = EmailServer::get_ip, port = 2525)
+	def self.start(host = EmailServer::get_ip, port = Config::SETTINGS[:local][:port])
 		require 'ostruct'
+		
+		host = Config::SETTINGS[:local][:host] unless Config::SETTINGS[:local][:host].empty?
+
 		@server = EM.start_server host, port, self
 			
 		puts "Server Running on #{host}:#{port}"

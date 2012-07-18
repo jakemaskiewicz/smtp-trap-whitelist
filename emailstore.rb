@@ -1,9 +1,12 @@
 require 'base64'
 require 'net/smtp'
 
+require 'config.rb'
+
 class EmailStore
 	
-	SMTP_SERVER = 'real.smtp.server'
+	SMTP_SERVER = Config::SETTINGS[:remote][:host]
+	SMTP_PORT = Config::SETTINGS[:remote][:port]
 
 	def initialize
 		@emailarray = Array.new
@@ -38,7 +41,7 @@ class EmailStore
 		if @whitelist.include? msg.recipient
 			puts "Forwarding message through #{SMTP_SERVER}"
 
-			Net::SMTP.start(SMTP_SERVER,25) do |smtp|
+			Net::SMTP.start(SMTP_SERVER,SMTP_PORT) do |smtp|
 				smtp.send_message msg.data, msg.sender, msg.recipient
 			end
 
